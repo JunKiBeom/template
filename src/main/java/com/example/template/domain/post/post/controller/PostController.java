@@ -9,8 +9,14 @@ public class PostController {
 
     @GetMapping("/")
     @ResponseBody
-    public String hello() {
-        return "hello";
+    public String showWrite() {
+        return """
+                <form action="">
+                  <input type="text" name="title" placeholder="제목" />
+                  <textarea name="content"></textarea>
+                  <input type="submit" value="등록" />
+                </form>
+                """;
     }
 
 }
