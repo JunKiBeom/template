@@ -7,7 +7,10 @@ import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.stream.Collectors;
 
@@ -18,7 +21,7 @@ public class PostController {
     @GetMapping("/write")
     @ResponseBody
     public String showWrite() {
-        return getFormHtml("");
+        return getFormHtml("", "", "");
     }
 
     @AllArgsConstructor
@@ -42,10 +45,10 @@ public class PostController {
                     .stream()
                     .map(err -> err.getDefaultMessage())
                     .sorted()
-                    .map(msg -> msg.split("-")[1])
+                    .map(msg->msg.split("-")[1])
                     .collect(Collectors.joining("<br>"));
 
-            return getFormHtml(errorMessage);
+            return getFormHtml(errorMessage, form.getTitle(), form.getContent());
         }
 
         return """
@@ -55,15 +58,15 @@ public class PostController {
                 """.formatted(form.getTitle(), form.getContent());
     }
 
-    private String getFormHtml(String errorMsg) {
+    private String getFormHtml(String errorMsg, String title, String content) {
         return """
-                    <div>%s</div>
-                    <form method="post">
-                      <input type="text" name="title" placeholder="제목" /> <br>
-                      <textarea name="content"></textarea> <br>
-                      <input type="submit" value="등록" /> <br>
-                    </form>
-                    """.formatted(errorMsg);
+                <div>%s</div>
+                <form method="post">
+                  <input type="text" name="title" placeholder="제목" value="%s"/> <br>
+                  <textarea name="content">%s</textarea> <br>
+                  <input type="submit" value="등록" /> <br>
+                </form>
+                """.formatted(errorMsg, title, content);
     }
 
 
