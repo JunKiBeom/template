@@ -81,6 +81,8 @@ public class PostController {
                     .collect(Collectors.joining("<br>"));
 
             model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("title", form.getTitle());
+            model.addAttribute("content", form.getContent());
 
             return "domain/post/post/write";
         }
